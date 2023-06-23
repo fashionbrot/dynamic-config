@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.SysMenuMapper">
+
+
+    <resultMap type="sysMenuEntity" id="sysMenuMap">
+            <result property="id" column="id"/>
+            <result property="menuName" column="menu_name"/>
+            <result property="menuLevel" column="menu_level"/>
+            <result property="menuUrl" column="menu_url"/>
+            <result property="parentMenuId" column="parent_menu_id"/>
+            <result property="priority" column="priority"/>
+            <result property="permission" column="permission"/>
+            <result property="target" column="target"/>
+            <result property="visible" column="visible"/>
+            <result property="isRefresh" column="is_refresh"/>
+            <result property="icon" column="icon"/>
+            <result property="createDate" column="create_date"/>
+            <result property="updateDate" column="update_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+
+    <sql id="allSql">
+        id,menu_name,menu_level,menu_url,parent_menu_id,priority,permission,target,visible,is_refresh,icon,create_date,update_date,del_flag
+    </sql>
+
+
+    <select id="selectMenuRole" parameterType="java.util.Map" resultMap="sysMenuMap">
+        SELECT DISTINCT a.id,a.parent_menu_id,a.menu_name,a.menu_level,a.priority,a.target,a.visible,a.is_refresh,a.icon,a.permission,a.menu_url
+        FROM  sys_menu a
+        INNER JOIN  sys_menu_role_relation b on a.id=b.menu_id
+        INNER JOIN  sys_role c on c.id=b.role_id  and c.del_flag=0
+        WHERE    a.del_flag=0
+        <if test="roleId!=null">
+            and b.role_id=#{roleId}
+        </if>
+        ORDER BY a.priority ASC
+    </select>
+
+    <select id="selectMenuRoleByUser" parameterType="java.util.Map" resultMap="sysMenuMap">
+        SELECT e.id,e.menu_name,e.menu_level,e.menu_url,e.parent_menu_id,e.priority,e.permission
+        FROM   sys_role c
+        INNER JOIN sys_menu_role_relation d on d.role_id=c.id
+        INNER JOIN sys_menu e on e.id=d.menu_id   and e.del_flag=0
+        WHERE c.del_flag=0 and c.status=1 and c.id = #{roleId}
+        ORDER BY e.priority ASC
+    </select>
+
+
+    <select id="selectMenuPermission" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT GROUP_CONCAT(e.permission)
+        FROM   sys_role c
+        INNER JOIN sys_menu_role_relation d on d.role_id=c.id
+        INNER JOIN sys_menu e on e.id=d.menu_id   and e.del_flag=0
+        WHERE c.del_flag=0 and c.status=1 and e.menu_level in (2,3) and c.id = #{roleId}
+        ORDER BY e.priority ASC
+    </select>
+
+
+</mapper>
