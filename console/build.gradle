@@ -22,3 +22,7 @@ configurations {
 dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools:2.6.4"
 }
+
+
+sourceSets.main.resources.srcDirs = ["src/main/java","src/main/resources"]
+

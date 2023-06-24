@@ -88,7 +88,7 @@
                         <li class="dropdown user-menu">
                             <a href="javascript:void(0)" class="dropdown-toggle" data-hover="dropdown">
                                 <!--<img th:src="(${#strings.isEmpty(user.avatar)}) ? @{/img/profile.jpg} : @{${user.avatar}}" th:onerror="this.src='img/profile.jpg'" class="user-image">-->
-                                <span class="hidden-xs">[[${#strings.defaultString(user.userName, '-')}]]</span>
+                                <span class="hidden-xs">[[${#strings.defaultString(userName, '-')}]]</span>
                             </a>
                             <ul class="dropdown-menu">
 

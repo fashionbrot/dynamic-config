@@ -46,8 +46,6 @@
 
 
     <select id="selectListByReq" parameterType="com.github.fashionbrot.request.SysLogRequest" resultMap="sysLogDtoMap">
-
-        <if test="interfaceType==1">
             select a.id,
             a.exception,
             a.request_desc,
@@ -85,50 +83,6 @@
                 and b.user_name like concat('%',#{username},'%')
             </if>
             order by a.id desc
-        </if>
-
-        <if test="interfaceType==2">
-
-            select a.id,
-            a.exception,
-            a.request_desc,
-            a.request_url,
-            a.method_type,
-            a.request_ip,
-            a.request_param,
-            a.target_method,
-            a.log_type,
-            a.interface_type,
-            a.create_id,
-            b.name as create_name,
-            a.create_date,
-            a.request_id
-            from sys_log a
-            left join e_account b on a.create_id= b.id
-            where a.del_flag=0 and a.interface_type=2
-            <if test="startTime!=null">
-                <![CDATA[
-                and a.create_date >= #{startTime}
-                 ]]>
-            </if>
-            <if test="endTime!=null">
-                <![CDATA[
-                and a.create_date <= #{endTime}
-                ]]>
-            </if>
-            <if test="logType!=null">
-                and a.log_type =#{logType}
-            </if>
-            <if test="query!=null and query!=''">
-                and a.request_url like concat('%',#{query},'%')
-            </if>
-            <if test="username!=null and username!=''">
-                and b.name like concat('%',#{username},'%')
-            </if>
-            order by a.id desc
-
-        </if>
-
     </select>
 
 
