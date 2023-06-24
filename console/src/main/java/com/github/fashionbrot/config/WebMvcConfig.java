@@ -1,9 +1,7 @@
 package com.github.fashionbrot.config;
 
 
-import com.diantang.embedded.interceptor.BackstageInterceptor;
-import com.diantang.embedded.interceptor.CompanyInterceptor;
-import com.diantang.embedded.interceptor.UserInterceptor;
+import com.github.fashionbrot.interceptor.BackstageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,10 +73,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/swagger-ui/index.html")
                 .excludePathPatterns("/test/**")
                 .excludePathPatterns("/shanxi.json")
-                .excludePathPatterns("/api/miniprogram/**")
-                .excludePathPatterns("/api/banner/**")
-                .excludePathPatterns("/api/employment/**")
-                .excludePathPatterns("/question/view")
 
         ;
 

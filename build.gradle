@@ -82,6 +82,8 @@ subprojects {
         implementation "com.github.xiaoymin:swagger-bootstrap-ui:1.9.6"
         implementation "com.github.xiaoymin:knife4j-spring-boot-starter:3.0.2"
 
+//        implementation 'com.baomidou:dynamic-datasource-spring-boot-starter:3.6.1'
+
     }
 }
 

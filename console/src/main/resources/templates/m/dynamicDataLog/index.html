@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('数据配置记录列表')" />
+	<th:block th:include="include :: layout-latest-css" />
+	<th:block th:include="include :: select2-css" />
+	<style>
+		.select-list .select2-container--bootstrap {
+			width:120px!important;
+			display: inline-block;
+		}
+		.select2-container--bootstrap .select2-selection--single {
+			height: 30px;
+			line-height: 1.42857143;
+			padding: 4px 6px 4px;
+		}
+		.select2-container .select2-selection--single {
+			box-sizing: border-box;
+			cursor: pointer;
+			display: block;
+			height: 30px;
+			user-select: none;
+			-webkit-user-select: none;
+		}
+		.search-collapse, .select-table {
+			width: 100%;
+			background: #fff;
+			border-radius: 6px;
+			margin-top: 10px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			box-shadow: 1px 1px 3px rgb(0 0 0 / 20%);
+		}
+	</style>
+</head>
+<body class="gray-bg">
+
+<div class="container-div">
+	<div class="row">
+
+		<div class="col-sm-12 search-collapse">
+			<form id="searchForm">
+				<div style="border: 0px solid red;width: 800px;height:32px;display: flex;">
+
+
+					<div style="width:200px;display: inline-flex;">
+						<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+							环境：
+						</div>
+						<div>
+							<select id="envCode" name="envCode"  >
+							</select>
+						</div>
+					</div>
+					<div style="width:200px;display: inline-flex;">
+						<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+							应用：
+						</div>
+						<div>
+							<select id="appCode" name="appCode"  style="width: 100px;">
+							</select>
+						</div>
+					</div>
+					<div style="width:210px;display: inline-flex;">
+						<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+							模板：
+						</div>
+						<div>
+							<select id="templateKey" name="templateKey"  style="width: 155px;" >
+								<option value="">请选择</option>
+							</select>
+						</div>
+					</div>
+					<div style="width:65px">
+						<a class="btn btn-primary btn-rounded btn-sm" onclick="query()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+					</div>
+
+
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="btn-group-sm" id="toolbar" role="group">
+
+
+		</div>
+
+		<div class="col-sm-12 select-table table-condensed " style="height:98%;" id="tableId">
+			<table id="bootstrap-table"></table>
+		</div>
+
+	</div>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+	<script th:inline="javascript">
+
+
+
+
+
+		var editFlag ;
+		var removeFlag ;
+		var prefix = ctx + "m/dynamic/data/log";
+
+
+		$(function() {
+
+			common.loadEnv("envCode","",true);
+			$('#envCode').select2({
+				allowClear: false,
+				width:"120",
+				height:"30"
+			});
+			$("#envCode").on("change",function () {
+				searchPre();
+			});
+
+
+
+			common.loadApp("appCode","",true);
+			$('#appCode').select2({
+				allowClear: false,
+				width:"120"
+			});
+			loadTemplate();
+
+			$("#appCode").on("change",function () {
+				loadTemplate();
+			})
+			$("#templateKey").on("change",function () {
+				// searchPre();
+				query();
+			});
+
+
+
+		});
+		function loadTemplate() {
+			var appCode = $("#appCode").val();
+			common.loadTemplate("templateKey","",appCode);
+
+			$('#templateKey').select2({
+				allowClear: false,
+				width:"155"
+			});
+		}
+
+		var propertyRowsAll;
+		function query() {
+			var appCode = $("#appCode").val();
+			var templateKey = $("#templateKey").val();
+
+
+			var columnGroup=[];
+
+			columnGroup.push({
+				field: 'envCode',
+				title: '环境',
+				align: 'center'
+			});
+			columnGroup.push({
+				field: 'appCode',
+				title: '应用',
+				align: 'center'
+			});
+			columnGroup.push({
+				field: 'templateKey',
+				title: '模板',
+				align: 'center'
+			});
+			columnGroup.push(
+				{
+					field: 'operationType',
+					title: '操作类型',
+					align: 'center',
+					formatter: function(value, row, index) {
+						if (value==1){
+							return "<span style=\"color: red;\">修改</span>"
+						}else if (value==2){
+							return "<span style=\"color: red;\">删除</span>"
+						}else if (value==3){
+							return "<span style=\"color: red;\">回滚</span>"
+						}
+						return "未知";
+					}
+				}
+			);
+
+
+			columnGroup.push(
+					{
+						field: 'description',
+						title: '描述',
+						align: 'center'
+					}
+			);
+
+			columnGroup.push(
+					{
+						field: 'createName',
+						title: '操作人',
+						sortable: false,
+						align: "center"
+					}
+			);
+			columnGroup.push(
+					{
+						field: 'createDate',
+						title: '创建时间',
+						sortable: false,
+						align: "center"
+					}
+			);
+			columnGroup.push(
+					{
+						title: '操作',
+						align: 'center',
+						formatter: function(value, row, index) {
+							var actions = [];
+
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull2(\'' + row.id + '\',\'查看详情\',\'回滚到修改前\',\'取消\',1000,\'\')"><i class="fa fa-edit"></i>查看详情</a> ');
+							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+							return actions.join('');
+						}
+					}
+			);
+
+			if(!table.get(table.options.id)){
+				initTable(columnGroup);
+			} else {
+				refreshTable(columnGroup);
+			}
+
+		}
+
+		// 刷新表格
+		function refreshTable(columns) {
+			var options1 = {
+				url: prefix + "/page",
+				createUrl: prefix + "/add",
+				updateUrl: prefix + "/edit?id={id}",
+				removeUrl: prefix + "/deleteById",
+				exportUrl: prefix + "/export",
+				modalName: "",
+				sortName: "createDate",
+				sortOrder: "desc",
+				method:"get",
+				columns:columns
+			};
+			$("#" + table.options.id).bootstrapTable('refreshOptions',options1);
+			setColor();
+		}
+
+		function initTable(columnGroup) {
+
+			var options1 = {
+				url: prefix + "/page",
+				createUrl: prefix + "/add",
+				updateUrl: prefix + "/edit?id={id}",
+				removeUrl: prefix + "/deleteById",
+				exportUrl: prefix + "/export",
+				modalName: "",
+				sortName: "createDate",
+				sortOrder: "desc",
+				method:"get",
+				columns:columnGroup
+			};
+			$.table.init(options1);
+
+			setColor();
+		}
+
+		function setColor() {
+			var headers = $("#bootstrap-table").find("thead tr th");
+			if (headers){
+				for(var i=0;i<headers.length;i++){
+					var h = headers[i];
+					var ziduan = $(h).attr("data-field");
+					if (getZd(ziduan)){
+						$(h).attr("style","color:#18a689");
+					}
+				}
+			}
+		}
+
+		function getZd(obj) {
+			if (propertyRowsAll){
+				for(var i=0;i<propertyRowsAll.length;i++){
+					var p = propertyRowsAll[i];
+					if (p.propertyKey == obj){
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+
+
+		function queryParams(params) {
+			var search = $.table.queryParams(params);
+			return search;
+		}
+
+		function searchPre() {
+			$.table.search('searchForm', 'bootstrap-table');
+		}
+
+		/* 角色状态显示 */
+		function statusTools(row) {
+			if (row.status == 1) {
+				return '开启';
+			} else {
+				return '<span style="color: red;">关闭</span>';
+			}
+		}
+
+
+	</script>
+</body>
+</html>
