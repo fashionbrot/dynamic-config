@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.DynamicDataValueMapper">
+
+
+    <resultMap type="dynamicDataValueEntity" id="dynamicDataValueMap">
+            <result property="id" column="id"/>
+            <result property="dataId" column="data_id"/>
+            <result property="json" column="json"/>
+            <result property="tempJson" column="temp_json"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+
+    <sql id="allSql">
+        id,data_id,json,temp_json,del_flag
+    </sql>
+
+
+    <update id="updateRelease" parameterType="java.util.Map">
+        update m_dynamic_data_value set json = temp_json
+        where
+        <if test="dataIds != null and dataIds.size()>0">
+             data_id in
+            <foreach collection="dataIds" item="listItem" open="(" close=")" separator=",">
+                #{listItem}
+            </foreach>
+        </if>
+    </update>
+
+    <select id="selectDelById" resultType="dynamicDataValueEntity" parameterType="java.lang.Long">
+        select * from m_dynamic_data_value where  id = #{id}
+    </select>
+
+</mapper>

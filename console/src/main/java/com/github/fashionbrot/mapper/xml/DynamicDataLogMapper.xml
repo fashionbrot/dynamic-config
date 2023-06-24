@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.DynamicDataLogMapper">
+
+
+ <!--   <resultMap type="com.github.fashionbrot.entity.DynamicDataLogEntity" id="dynamicDataLogMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="appCode" column="app_code"/>
+            <result property="templateKey" column="template_key"/>
+            <result property="description" column="description"/>
+            <result property="operationType" column="operation_type"/>
+            <result property="json" column="json"/>
+            <result property="tempJson" column="temp_json"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <sql id="allSql">
+        id,env_code,app_code,template_key,description,json,temp_json,create_id,create_date,del_flag
+    </sql>-->
+
+
+    <select id="selectByReq" parameterType="com.github.fashionbrot.request.DynamicDataLogRequest"
+            resultType="dynamicDataLogEntity">
+        select
+        a.id,
+        a.env_code,
+        a.app_code,
+        a.template_key,
+        a.description,
+        a.operation_type,
+        a.json,
+        a.temp_json,
+        a.create_date,
+        a.data_value_id,
+        b.user_name as createName
+        from m_dynamic_data_log a
+        left join sys_user b on a.create_id = b.id
+        where  a.del_flag=0
+        <if test="envCode!=null and envCode!=''">
+            and a.env_code=#{envCode}
+        </if>
+        <if test="appCode!=null and appCode!=''">
+            and a.app_code=#{appCode}
+        </if>
+        <if test="templateKey!=null and templateKey!=''">
+            and a.template_key=#{templateKey}
+        </if>
+        order by a.id desc
+    </select>
+
+
+</mapper>

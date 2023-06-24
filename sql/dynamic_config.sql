@@ -131,3 +131,246 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('48', '日志-查看详情', '3', '', '46', '503', 'sys:log:index:detail', 'menuItem', '0', '1', '', '2021-02-24 15:20:41', '2021-03-01 14:37:59', '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('49', '日志-数据分页', '3', '', '46', '504', 'sys:log:page', 'menuItem', '0', '1', '', '2021-03-01 14:47:05', NULL, '0');
 
+
+
+DROP TABLE IF EXISTS `m_app`;
+CREATE TABLE `m_app`
+(
+    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `app_code`    varchar(32) NOT NULL COMMENT '应用',
+    `app_desc`    varchar(32) NOT NULL COMMENT '应用说明',
+    `create_id`   bigint(11) unsigned NOT NULL COMMENT '创建者id',
+    `create_date` datetime    NOT NULL COMMENT '创建时间',
+    `del_flag`    tinyint unsigned DEFAULT 0 COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用表';
+
+
+DROP TABLE IF EXISTS `m_env`;
+CREATE TABLE `m_env`
+(
+    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `env_code`    varchar(32) NOT NULL COMMENT '环境',
+    `env_desc`    varchar(32) NOT NULL COMMENT '环境描述',
+    `create_id`   bigint(11) unsigned NOT NULL COMMENT '创建者id',
+    `create_date` datetime    NOT NULL COMMENT '创建时间',
+    `del_flag`    tinyint unsigned DEFAULT 0 COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='环境表';
+
+DROP TABLE IF EXISTS `m_env_variable`;
+CREATE TABLE `m_env_variable`
+(
+    `id`            bigint unsigned NOT NULL  COMMENT '主键Id',
+    `variable_name` varchar(32) NOT NULL COMMENT '变量名称',
+    `variable_desc` varchar(32) DEFAULT NULL COMMENT '变量说明',
+    `variable_key`  varchar(32) NOT NULL COMMENT '变量key',
+    `create_id`     bigint(11) unsigned NOT NULL COMMENT '创建者id',
+    `create_date`   datetime    NOT NULL COMMENT '创建时间',
+    `del_flag`      tinyint unsigned DEFAULT 0 COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='常量表';
+
+
+DROP TABLE IF EXISTS `m_env_variable_relation`;
+CREATE TABLE `m_env_variable_relation`
+(
+    `id`             bigint unsigned NOT NULL  COMMENT '主键Id',
+    `env_code`       varchar(32)  NOT NULL COMMENT '环境code',
+    `variable_value` varchar(255) NOT NULL COMMENT '常量值',
+    `variable_key`   varchar(32)  NOT NULL COMMENT '常量key',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='常量和环境关系表';
+
+
+
+DROP TABLE IF EXISTS `m_template`;
+CREATE TABLE `m_template`
+(
+    `id`            bigint unsigned NOT NULL  COMMENT '主键Id',
+    `app_code`      varchar(32) NOT NULL COMMENT '应用',
+    `template_key`  varchar(32) NOT NULL COMMENT '模板key',
+    `template_name` varchar(32) NOT NULL COMMENT '模板名称',
+    `template_desc` varchar(32) DEFAULT NULL COMMENT '模板描述',
+    `create_id`     bigint(11) unsigned NOT NULL COMMENT '创建者id',
+    `create_date`   datetime    NOT NULL COMMENT '创建时间',
+    `del_flag`      tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模板表';
+
+
+
+DROP TABLE IF EXISTS `m_property`;
+CREATE TABLE `m_property`
+(
+    `id`             bigint unsigned NOT NULL COMMENT '主键Id',
+    `property_name`  varchar(32) NOT NULL COMMENT '属性名称',
+    `property_key`   varchar(32) NOT NULL COMMENT '属性key',
+    `property_type`  varchar(32) NOT NULL COMMENT '属性类型',
+    `column_length`  tinyint unsigned NOT NULL COMMENT '属性长度',
+    `label_type`     varchar(64) NOT NULL COMMENT 'html标签类型',
+    `label_value`    varchar(255) default '' COMMENT 'html 标签默认值',
+    `label_required` tinyint unsigned DEFAULT '0' COMMENT '是否必填 0非必填 1必填 ',
+    `default_value`  varchar(64)  default '' COMMENT '默认值',
+    `app_code`       varchar(32) NOT NULL COMMENT '应用名称',
+    `variable_key`   varchar(32)  DEFAULT NULL COMMENT '常量key',
+    `template_key`   varchar(32)  DEFAULT NULL COMMENT '模板key ，公共属性为空，指定模板属性不为空',
+    `attribute_type` tinyint unsigned DEFAULT '0' COMMENT '属性类别 0 公共属性 1 模板属性',
+    `priority`       tinyint unsigned NOT NULL DEFAULT '0' COMMENT '显示优先级',
+    `show_table`     tinyint unsigned NOT NULL DEFAULT '0' COMMENT '是否在table页展示 1展示 0 不展示',
+    `create_id`      bigint(11) unsigned NOT NULL COMMENT '创建者id',
+    `create_date`    datetime    NOT NULL COMMENT '创建时间',
+    `del_flag`       tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='属性表';
+
+
+
+DROP TABLE IF EXISTS `m_dynamic_data`;
+CREATE TABLE `m_dynamic_data`
+(
+    `id`           bigint unsigned NOT NULL  COMMENT '主键Id',
+    `env_code`     varchar(32) NOT NULL COMMENT '环境code',
+    `app_code`     varchar(32) NOT NULL COMMENT '应用名',
+    `template_key` varchar(32) NOT NULL COMMENT '模板key',
+    `status`       tinyint unsigned DEFAULT '1' COMMENT '状态 1开启 0关闭',
+    `data_desc`    varchar(32) DEFAULT '' COMMENT '描述',
+    `priority`     tinyint unsigned NOT NULL DEFAULT '0' COMMENT '优先级',
+    `release_type` tinyint unsigned DEFAULT '0' COMMENT '发布状态 1已发布 0修改 2已删除 3新增',
+    `create_id`    bigint(11) unsigned NOT NULL COMMENT '创建者id',
+    `create_date`  datetime    NOT NULL COMMENT '创建时间',
+    `update_id`    bigint(11) unsigned DEFAULT NULL COMMENT '最近更新者id',
+    `update_date`  datetime    DEFAULT NULL COMMENT '最近更新时间',
+    `del_flag`     tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`),
+    KEY            `index_eat` (`env_code`,`app_code`,`template_key`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='动态配置表';
+
+
+DROP TABLE IF EXISTS `m_dynamic_data_value`;
+CREATE TABLE `m_dynamic_data_value`
+(
+    `id`        bigint unsigned NOT NULL  COMMENT '主键Id',
+    `data_id`   bigint unsigned NOT NULL COMMENT '动态配置表id',
+    `json`      text DEFAULT NULL COMMENT '实例json',
+    `temp_json` text DEFAULT NULL COMMENT 'temp json',
+    `del_flag`  tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`),
+    KEY         `index_eat` (`data_id`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='动态配置数据表';
+
+
+DROP TABLE IF EXISTS `m_dynamic_data_log`;
+CREATE TABLE `m_dynamic_data_log`
+(
+    `id`             bigint unsigned NOT NULL  COMMENT '主键Id',
+    `env_code`       varchar(32) NOT NULL COMMENT '环境code',
+    `app_code`       varchar(32) NOT NULL COMMENT '应用名',
+    `template_key`   varchar(32) NOT NULL COMMENT '模板key',
+    `description`    varchar(32) DEFAULT NULL COMMENT '描述',
+    `operation_type` tinyint unsigned DEFAULT '0' COMMENT '操作类型 1编辑 2删除 ',
+    `data_value_id`  bigint(20) unsigned NOT NULL COMMENT '动态配置数据 id',
+    `json`           text        DEFAULT NULL COMMENT '实例json',
+    `temp_json`      text        DEFAULT NULL COMMENT 'temp json',
+    `create_id`      bigint(11) unsigned NOT NULL COMMENT '创建者id',
+    `create_date`    datetime    NOT NULL COMMENT '创建时间',
+    `del_flag`       tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`),
+    KEY              `index_eat` (`env_code`,`app_code`,`template_key`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='配置数据记录表';
+
+
+
+DROP TABLE IF EXISTS `m_dynamic_data_release`;
+CREATE TABLE `m_dynamic_data_release`
+(
+    `id`            bigint unsigned NOT NULL  COMMENT '主键Id',
+    `env_code`      varchar(32) NOT NULL COMMENT '环境code',
+    `app_code`      varchar(32) NOT NULL COMMENT '应用名',
+    `template_keys` varchar(255) DEFAULT NULL COMMENT '模板keys',
+    `update_date`   datetime     DEFAULT NULL COMMENT '最近更新时间',
+    `del_flag`      tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`),
+    KEY             `index_envCode_appName` (`env_code`,`app_code`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='配置数据发布表';
+
+
+
+DROP TABLE IF EXISTS `m_system_config`;
+CREATE TABLE `m_system_config`
+(
+    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `app_code`    varchar(32) NOT NULL COMMENT '应用名称',
+    `env_code`    varchar(32) NOT NULL COMMENT '环境code',
+    `modifier`    varchar(32)          DEFAULT NULL COMMENT '修改人',
+    `file_name`   varchar(32) NOT NULL COMMENT '文件名称',
+    `file_desc`   varchar(255)         DEFAULT NULL COMMENT '文件描述',
+    `file_type`   varchar(16) NOT NULL DEFAULT 'PROPERTIES' COMMENT '文件类型 TEXT YAML  PROPERTIES',
+    `json`        text                 DEFAULT NULL COMMENT '配置文件内容',
+    `temp_json`   text                 DEFAULT NULL COMMENT '临时数据',
+    `status`      tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态 1新增 2更新 3删除 4已发布',
+    `create_date` datetime    NOT NULL COMMENT '创建时间',
+    `update_date` datetime             DEFAULT NULL COMMENT '最近更新时间',
+    `del_flag`    tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    `theme`       varchar(32)          default 'abcdef' COMMENT '主题',
+    PRIMARY KEY (`id`),
+    KEY           `idx_envcode_appcode` (`env_code`,`app_code`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置表';
+ALTER TABLE m_system_config
+    ADD INDEX index_del_flag (del_flag);
+
+
+DROP TABLE IF EXISTS `m_system_config_history`;
+CREATE TABLE `m_system_config_history`
+(
+    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `app_code`    varchar(32) NOT NULL COMMENT '应用名称',
+    `env_code`    varchar(32) NOT NULL COMMENT '环境code',
+    `modifier`    varchar(32)          DEFAULT NULL COMMENT '修改人',
+    `file_name`   varchar(32) NOT NULL COMMENT '文件名称',
+    `file_desc`   varchar(255)         DEFAULT NULL COMMENT '文件描述',
+    `file_type`   varchar(16) NOT NULL DEFAULT 'PROPERTIES' COMMENT '文件类型 TEXT YAML  PROPERTIES',
+    `json`        text                 DEFAULT NULL COMMENT '配置文件内容',
+    `temp_json`   text                 DEFAULT NULL COMMENT '临时数据',
+    `status`      tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态 1新增 2更新 3删除 4已发布',
+    `create_date` datetime    NOT NULL COMMENT '创建时间',
+    `update_date` datetime             DEFAULT NULL COMMENT '最近更新时间',
+    `del_flag`    tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    `theme`       varchar(32)          default 'abcdef' COMMENT '主题',
+    PRIMARY KEY (`id`),
+    KEY           `idx_envcode_appcode` (`env_code`,`app_code`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置历史表';
+ALTER TABLE m_system_config_history
+    ADD INDEX index_del_flag (del_flag);
+
+
+
+DROP TABLE IF EXISTS `m_system_config_role_relation`;
+CREATE TABLE `m_system_config_role_relation`
+(
+    `id`               bigint unsigned NOT NULL  COMMENT '主键Id',
+    `role_id`          bigint(11) unsigned NOT NULL COMMENT '角色ID',
+    `system_config_id` bigint(20) unsigned NOT NULL COMMENT '动态配置ID',
+    `permission`       tinyint unsigned NOT NULL COMMENT '权限 1111 代表 增删改查 都有权限',
+    `create_date`      datetime NOT NULL COMMENT '创建时间',
+    `update_id`        bigint(11) unsigned DEFAULT NULL COMMENT '最近更新者id',
+    `update_date`      datetime DEFAULT NULL COMMENT '最近更新时间',
+    `del_flag`         tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='应用系统配置-角色关系表';
+ALTER TABLE m_system_config_role_relation
+    ADD INDEX index_del_flag (del_flag);
+
+
+DROP TABLE IF EXISTS `m_system_release`;
+CREATE TABLE `m_system_release`
+(
+    `id`           bigint unsigned NOT NULL  COMMENT '主键Id',
+    `env_code`     varchar(32) NOT NULL COMMENT '环境code',
+    `app_code`     varchar(32) NOT NULL COMMENT '应用code',
+    `files`        varchar(255) DEFAULT NULL COMMENT '文件名',
+    `update_date`  datetime     DEFAULT NULL COMMENT '最近更新时间',
+    `release_flag` tinyint unsigned DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+    PRIMARY KEY (`id`),
+    KEY            `index` (`env_code`,`app_code`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';
