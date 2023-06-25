@@ -110,7 +110,7 @@
 
     <resultMap type="com.github.fashionbrot.response.DataDynamicResponse" id="dtoMap2">
         <result property="templateKey" column="template_key"/>
-        <collection property="jsonList" ofType="com.github.fashionbrot.vo.DataDynamicJsonVo">
+        <collection property="jsonList" ofType="com.github.fashionbrot.response.DataDynamicJsonResponse">
             <result property="json" column="json" />
         </collection>
     </resultMap>

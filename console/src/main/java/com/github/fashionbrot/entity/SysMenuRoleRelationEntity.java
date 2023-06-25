@@ -4,6 +4,8 @@ package com.github.fashionbrot.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -30,6 +32,7 @@ public class SysMenuRoleRelationEntity implements Serializable {
 	private static final long serialVersionUID = 8030707155597014997L;
 	@ApiModelProperty(value = "自增id")
 	@TableId(type = IdType.AUTO)
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
 	@ApiModelProperty(value = "用户ID")

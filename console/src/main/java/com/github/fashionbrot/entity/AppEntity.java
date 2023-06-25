@@ -2,6 +2,8 @@ package com.github.fashionbrot.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -28,8 +30,10 @@ public class AppEntity implements Serializable {
 
 
 	private static final long serialVersionUID = -4907363025460878323L;
+
 	@ApiModelProperty(value = "自增id")
 	@TableId(type = IdType.ASSIGN_ID)
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
 	@ApiModelProperty(value = "应用")
