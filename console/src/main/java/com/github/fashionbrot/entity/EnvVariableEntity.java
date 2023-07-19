@@ -31,9 +31,8 @@ public class EnvVariableEntity implements Serializable {
 
 
 	private static final long serialVersionUID = 4487220322301175858L;
-	@ApiModelProperty(value = "自增id")
-	@TableId(type = IdType.ASSIGN_ID)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@ApiModelProperty(value = "主键id")
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
 	@ApiModelProperty(value = "变量名称")

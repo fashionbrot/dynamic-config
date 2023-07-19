@@ -1,8 +1,6 @@
 package com.github.fashionbrot.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -27,9 +25,8 @@ public class DynamicDataValueEntity implements Serializable {
 
 
 	private static final long serialVersionUID = -4988133868760460022L;
-	@ApiModelProperty(value = "自增id")
-	@TableId(type = IdType.ASSIGN_ID)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@ApiModelProperty(value = "主键id")
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
 	@ApiModelProperty(value = "动态配置表id")

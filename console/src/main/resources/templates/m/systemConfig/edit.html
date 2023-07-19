@@ -14,20 +14,20 @@
 
 
         <div class="form-group">
-            <label class="col-sm-2 control-label is-required">文件名：</label>
+            <label class="col-sm-1 control-label is-required">文件名：</label>
             <div class="col-sm-10">
                 <input type="text"  name="fileName" id="fileName" class="form-control" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label ">文件描述：</label>
+            <label class="col-sm-1 control-label ">文件描述：</label>
             <div class="col-sm-10">
                 <textarea type="text"  name="fileDesc" rows="2" id="fileDesc" class="form-control" ></textarea>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label ">文件类型：</label>
+            <label class="col-sm-1 control-label ">文件类型：</label>
             <div class="col-sm-10">
                 <label class="radio-box PROPERTIES">
                     <input type="radio"  class="PROPERTIES"  value="PROPERTIES"  name="fileType"  />PROPERTIES
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label ">配置：</label>
+            <label class="col-sm-1 control-label ">配置：</label>
             <div class="col-sm-10">
                 <div style="width: 100%;font-size: 11px;background: black;color: #ffffff;">
                     <div>F10全屏 Esc恢复 Ctrl+F 查找
@@ -122,6 +122,13 @@
             </div>
         </div>
 
+        <div class="form-group" style="margin-top: 100px;padding-bottom: 100px;">
+            <label class="col-sm-1 control-label"></label>
+            <div class="col-sm-10" style="">
+                <button type="button" onclick="submitHandler()" class="btn btn-success">确 定</button>
+                <button type="button" onclick="$.modal.closeTab()" style="margin-left: 20px;" class="btn btn-secondary">取 消</button>
+            </div>
+        </div>
 
     </form>
 </div>

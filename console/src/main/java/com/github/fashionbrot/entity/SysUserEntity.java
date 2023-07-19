@@ -28,9 +28,8 @@ public class SysUserEntity implements Serializable {
 
 	private static final long serialVersionUID = 5811226384717664723L;
 
-	@ApiModelProperty(value = "自增ID")
+	@ApiModelProperty(value = "主键id")
 	@TableId(type = IdType.AUTO)
-	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
 	@ApiModelProperty(value = "用户名")

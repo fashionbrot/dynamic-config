@@ -192,7 +192,7 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 DROP TABLE IF EXISTS `m_app`;
 CREATE TABLE `m_app`
 (
-    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `app_code`    varchar(32) NOT NULL COMMENT '应用',
     `app_desc`    varchar(32) NOT NULL COMMENT '应用说明',
     `create_id`   bigint(11) unsigned NOT NULL COMMENT '创建者id',
@@ -205,7 +205,7 @@ CREATE TABLE `m_app`
 DROP TABLE IF EXISTS `m_env`;
 CREATE TABLE `m_env`
 (
-    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `env_code`    varchar(32) NOT NULL COMMENT '环境',
     `env_desc`    varchar(32) NOT NULL COMMENT '环境描述',
     `create_id`   bigint(11) unsigned NOT NULL COMMENT '创建者id',
@@ -217,7 +217,7 @@ CREATE TABLE `m_env`
 DROP TABLE IF EXISTS `m_env_variable`;
 CREATE TABLE `m_env_variable`
 (
-    `id`            bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `variable_name` varchar(32) NOT NULL COMMENT '变量名称',
     `variable_desc` varchar(32) DEFAULT NULL COMMENT '变量说明',
     `variable_key`  varchar(32) NOT NULL COMMENT '变量key',
@@ -231,7 +231,7 @@ CREATE TABLE `m_env_variable`
 DROP TABLE IF EXISTS `m_env_variable_relation`;
 CREATE TABLE `m_env_variable_relation`
 (
-    `id`             bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `env_code`       varchar(32)  NOT NULL COMMENT '环境code',
     `variable_value` varchar(255) NOT NULL COMMENT '常量值',
     `variable_key`   varchar(32)  NOT NULL COMMENT '常量key',
@@ -243,7 +243,7 @@ CREATE TABLE `m_env_variable_relation`
 DROP TABLE IF EXISTS `m_template`;
 CREATE TABLE `m_template`
 (
-    `id`            bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `app_code`      varchar(32) NOT NULL COMMENT '应用',
     `template_key`  varchar(32) NOT NULL COMMENT '模板key',
     `template_name` varchar(32) NOT NULL COMMENT '模板名称',
@@ -259,7 +259,7 @@ CREATE TABLE `m_template`
 DROP TABLE IF EXISTS `m_property`;
 CREATE TABLE `m_property`
 (
-    `id`             bigint unsigned NOT NULL COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `property_name`  varchar(32) NOT NULL COMMENT '属性名称',
     `property_key`   varchar(32) NOT NULL COMMENT '属性key',
     `property_type`  varchar(32) NOT NULL COMMENT '属性类型',
@@ -285,7 +285,7 @@ CREATE TABLE `m_property`
 DROP TABLE IF EXISTS `m_dynamic_data`;
 CREATE TABLE `m_dynamic_data`
 (
-    `id`           bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `env_code`     varchar(32) NOT NULL COMMENT '环境code',
     `app_code`     varchar(32) NOT NULL COMMENT '应用名',
     `template_key` varchar(32) NOT NULL COMMENT '模板key',
@@ -306,7 +306,7 @@ CREATE TABLE `m_dynamic_data`
 DROP TABLE IF EXISTS `m_dynamic_data_value`;
 CREATE TABLE `m_dynamic_data_value`
 (
-    `id`        bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `data_id`   bigint unsigned NOT NULL COMMENT '动态配置表id',
     `json`      text DEFAULT NULL COMMENT '实例json',
     `temp_json` text DEFAULT NULL COMMENT 'temp json',
@@ -319,7 +319,7 @@ CREATE TABLE `m_dynamic_data_value`
 DROP TABLE IF EXISTS `m_dynamic_data_log`;
 CREATE TABLE `m_dynamic_data_log`
 (
-    `id`             bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `env_code`       varchar(32) NOT NULL COMMENT '环境code',
     `app_code`       varchar(32) NOT NULL COMMENT '应用名',
     `template_key`   varchar(32) NOT NULL COMMENT '模板key',
@@ -340,7 +340,7 @@ CREATE TABLE `m_dynamic_data_log`
 DROP TABLE IF EXISTS `m_dynamic_data_release`;
 CREATE TABLE `m_dynamic_data_release`
 (
-    `id`            bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `env_code`      varchar(32) NOT NULL COMMENT '环境code',
     `app_code`      varchar(32) NOT NULL COMMENT '应用名',
     `template_keys` varchar(255) DEFAULT NULL COMMENT '模板keys',
@@ -355,7 +355,7 @@ CREATE TABLE `m_dynamic_data_release`
 DROP TABLE IF EXISTS `m_system_config`;
 CREATE TABLE `m_system_config`
 (
-    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `app_code`    varchar(32) NOT NULL COMMENT '应用名称',
     `env_code`    varchar(32) NOT NULL COMMENT '环境code',
     `modifier`    varchar(32)          DEFAULT NULL COMMENT '修改人',
@@ -379,7 +379,7 @@ ALTER TABLE m_system_config
 DROP TABLE IF EXISTS `m_system_config_history`;
 CREATE TABLE `m_system_config_history`
 (
-    `id`          bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`          bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `app_code`    varchar(32) NOT NULL COMMENT '应用名称',
     `env_code`    varchar(32) NOT NULL COMMENT '环境code',
     `modifier`    varchar(32)          DEFAULT NULL COMMENT '修改人',
@@ -404,7 +404,7 @@ ALTER TABLE m_system_config_history
 DROP TABLE IF EXISTS `m_system_config_role_relation`;
 CREATE TABLE `m_system_config_role_relation`
 (
-    `id`               bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`               bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `role_id`          bigint(11) unsigned NOT NULL COMMENT '角色ID',
     `system_config_id` bigint(20) unsigned NOT NULL COMMENT '动态配置ID',
     `permission`       tinyint unsigned NOT NULL COMMENT '权限 1111 代表 增删改查 都有权限',
@@ -421,7 +421,7 @@ ALTER TABLE m_system_config_role_relation
 DROP TABLE IF EXISTS `m_system_release`;
 CREATE TABLE `m_system_release`
 (
-    `id`           bigint unsigned NOT NULL  COMMENT '主键Id',
+    `id`           bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `env_code`     varchar(32) NOT NULL COMMENT '环境code',
     `app_code`     varchar(32) NOT NULL COMMENT '应用code',
     `files`        varchar(255) DEFAULT NULL COMMENT '文件名',

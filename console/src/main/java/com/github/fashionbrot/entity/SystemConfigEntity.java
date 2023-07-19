@@ -30,9 +30,8 @@ public class SystemConfigEntity implements Serializable {
 
 
 
-	@ApiModelProperty(value = "自增id")
-	@TableId(type = IdType.ASSIGN_ID)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@ApiModelProperty(value = "主键id")
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
 	@ApiModelProperty(value = "应用名称")

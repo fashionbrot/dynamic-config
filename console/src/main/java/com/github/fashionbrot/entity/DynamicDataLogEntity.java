@@ -2,8 +2,6 @@ package com.github.fashionbrot.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -31,9 +29,8 @@ public class DynamicDataLogEntity implements Serializable {
 
 	private static final long serialVersionUID = 2396109619318227733L;
 
-	@ApiModelProperty(value = "自增id")
-	@TableId(type = IdType.ASSIGN_ID)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@ApiModelProperty(value = "主键id")
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
 	@ApiModelProperty(value = "环境code")

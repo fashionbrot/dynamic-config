@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -30,9 +28,8 @@ public class EnvVariableRelationEntity implements Serializable {
 
 	private static final long serialVersionUID = -1019209108188978084L;
 
-	@ApiModelProperty(value = "自增id")
-	@TableId(type = IdType.ASSIGN_ID)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@ApiModelProperty(value = "主键id")
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
 	@ApiModelProperty(value = "环境code")

@@ -30,9 +30,8 @@ public class EnvEntity implements Serializable {
 
 
 	private static final long serialVersionUID = 4394213359611313108L;
-	@ApiModelProperty(value = "自增id")
-	@TableId(type = IdType.ASSIGN_ID)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@ApiModelProperty(value = "主键id")
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
 	@ApiModelProperty(value = "环境")

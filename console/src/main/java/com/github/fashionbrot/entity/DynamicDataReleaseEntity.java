@@ -31,9 +31,8 @@ public class DynamicDataReleaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 6133521874624873802L;
 
-	@ApiModelProperty(value = "自增id")
-	@TableId(type = IdType.ASSIGN_ID)
-	@JsonSerialize(using = ToStringSerializer.class)
+	@ApiModelProperty(value = "主键id")
+	@TableId(type = IdType.AUTO)
 	private Long id;
 
 	@ApiModelProperty(value = "环境code")
